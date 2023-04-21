@@ -12,19 +12,20 @@ public class RoleDtoConverter implements Converter<String, RoleDTO> {
 
     RoleService roleService;
 
+    //We need converter because whatever we show on UI, Enum is shown as String and gives error. We need Converter for that.
     public RoleDtoConverter(RoleService roleService) {
         this.roleService = roleService;
     }
 
+
     @Override
     public RoleDTO convert(String source) {
+        if (source==null || source.equals((""))){
 
-        if (source == null || source.equals("")) {  //  Select  -> ""
             return null;
         }
 
         return roleService.findById(Long.parseLong(source));
 
     }
-
 }
