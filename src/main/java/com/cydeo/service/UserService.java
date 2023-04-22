@@ -12,4 +12,5 @@ public interface UserService {
     UserDTO findByUserName (String username); //why username and not primary key? UI perspective when we want to update we see "userName". we'll update byId in DB
     void save (UserDTO user);
     void deleteByUserName (String username);
+    UserDTO update (UserDTO user);
 }

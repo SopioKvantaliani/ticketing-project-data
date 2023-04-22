@@ -40,6 +40,19 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void deleteByUserName(String username) {
+         userRepository.deleteByUserName (username); //here we try to execute query and delete by username. We need to add delete method in UserRepository
+    }
+
+    @Override
+    public UserDTO update(UserDTO user) { //this user is whatever coming from UI (updated one)
+        //Find current user
+        User user1 = userRepository.findByUserName(user.getUserName());
+        //Map update user dto to entity object;
+        User convertedUser = userMapper.convertToEntity(user); //does this entity has any id or not? no id
+        //set id to the converted object;
+         convertedUser.setId(user1.getId()); //user1 comes from DB. We assign here same id , as user Dto doesn't have it.
+         userRepository.save(convertedUser);
+         return findByUserName(user.getUserName());
 
     }
 }
