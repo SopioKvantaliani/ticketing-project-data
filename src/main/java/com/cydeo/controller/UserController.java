@@ -6,7 +6,10 @@ import com.cydeo.service.RoleService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -27,31 +30,36 @@ public class UserController {
         //We are passing some data to the view using model.addAttribute
 
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", roleService.ListAllRoles());
+        model.addAttribute("roles", roleService.ListAllRoles()); //Business/Service layer. "roles" is object, holding data.
         model.addAttribute("users", userService.listAllUsers());
 
         return "/user/create";
 
     }
-//
-//    @PostMapping("/create")
-//    public String insertUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
-//
-//        if (bindingResult.hasErrors()) {
-//
-//            model.addAttribute("roles", roleService.findAll());
-//            model.addAttribute("users", userService.findAll());
-//
-//            return "/user/create";
-//
-//        }
-//
-//        userService.save(user);
-//
-//        return "redirect:/user/create";
-//
-//    }
-//
+
+    /*
+    3 Layer application: 1. Service Layer; 2. Data Base Layer; 3. API Layer.
+
+     */
+
+    @PostMapping("/create")
+    public String insertUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("roles", roleService.ListAllRoles());
+            model.addAttribute("users", userService.listAllUsers());
+
+            return "/user/create";
+
+        }
+
+        userService.save(user);
+
+        return "redirect:/user/create";
+
+    }
+
 //    @GetMapping("/update/{username}")
 //    public String editUser(@PathVariable("username") String username, Model model) {
 //
