@@ -22,7 +22,6 @@ public class UserDtoConverter implements Converter<String, UserDTO> {
         if (source == null || source.equals("")) {
             return null;
         }
-
         return userService.findByUserName(source);
 
     }

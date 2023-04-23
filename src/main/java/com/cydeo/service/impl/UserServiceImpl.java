@@ -43,6 +43,8 @@ public class UserServiceImpl implements UserService {
          userRepository.deleteByUserName (username); //here we try to execute query and delete by username. We need to add delete method in UserRepository
     }
 
+
+
     @Override
     public UserDTO update(UserDTO user) { //this user is whatever coming from UI (updated one)
         //Find current user
@@ -53,6 +55,17 @@ public class UserServiceImpl implements UserService {
          convertedUser.setId(user1.getId()); //user1 comes from DB. We assign here same id , as user Dto doesn't have it.
          userRepository.save(convertedUser);
          return findByUserName(user.getUserName());
+
+    }
+
+    @Override
+    public void delete(String username) {
+        //find user from DB first. Go to DB and get that user with userName;
+        User user = userRepository.findByUserName(username);
+        //change the isDeleted field to true
+        user.setIsDeleted(true);
+        //Save the object in the Db
+        userRepository.save(user);
 
     }
 }

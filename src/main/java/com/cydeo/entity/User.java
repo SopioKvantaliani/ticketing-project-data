@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table (name = "users")
 @NoArgsConstructor
+@Where(clause = "is_deleted=false") //any repository which is using user entity, whatever query inside, include "where" clause
 public class User extends BaseEntity {
 
     private String firstName;

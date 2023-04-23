@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository <User, Long> {
 
     /*
     if you have more than one steps in action, if all the steps successfully completed, action will be successfully committed. But if any steps failes
-    for any reason, app reverts the changes step 1 made. This action is names "rollback". When we put @Transactional
+    for any reason, app reverts the changes step 1 made. This action is called "rollback". When we put @Transactional
     it says, if anything happens rollback everything.
     @Transactional = we can put class level, or method level. When we delete, update, insert and this kind of actions, we need to put @Transactional.
     If anything happens we need to rollBack.
