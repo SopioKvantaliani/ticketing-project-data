@@ -16,15 +16,12 @@ public class RoleMapper {
         this.modelMapper = modelMapper;
     }
 
-    //Give me RoleDto and I'll return Role
-    public Role convertToEntity (RoleDTO dto){
-        return modelMapper.map(dto, Role.class);
+    public Role convertToEntity(RoleDTO dto){
+        return modelMapper.map(dto,Role.class);
+
     }
 
-    //Give me Role and I'll return Role DTO
-    public RoleDTO convertToDto (Role entity){
-
-    return modelMapper.map(entity, RoleDTO.class);
-
+    public RoleDTO convertToDto(Role entity){
+        return modelMapper.map(entity,RoleDTO.class);
     }
 }

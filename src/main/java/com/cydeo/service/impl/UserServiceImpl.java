@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserName(username);
         return userMapper.convertToDto(user);
     }
-
     @Override
     public void save(UserDTO user) {
         userRepository.save(userMapper.convertToEntity(user));
@@ -52,10 +51,10 @@ public class UserServiceImpl implements UserService {
         //Map update user dto to entity object;
         User convertedUser = userMapper.convertToEntity(user); //does this entity has any id or not? no id
         //set id to the converted object;
-         convertedUser.setId(user1.getId()); //user1 comes from DB. We assign here same id , as user Dto doesn't have it.
-         userRepository.save(convertedUser);
-         return findByUserName(user.getUserName());
+        convertedUser.setId(user1.getId());//user1 comes from DB. We assign here same id , as user Dto doesn't have it.
+        userRepository.save(convertedUser);
 
+        return findByUserName(user.getUserName());
     }
 
     @Override
@@ -71,7 +70,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> listAllByRole(String role) {
-        List <User > users = userRepository.findByRoleDescription("manager");
+        List<User> users = userRepository.findByRoleDescriptionIgnoreCase (role);
+        //we will convert one by one and that's why we use map
         return users.stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }
 }

@@ -26,6 +26,6 @@ public interface UserRepository extends JpaRepository <User, Long> {
 
      */
 
-   List <User> findByRoleDescription (String description);
+   List <User> findByRoleDescriptionIgnoreCase (String description);
 
 }
