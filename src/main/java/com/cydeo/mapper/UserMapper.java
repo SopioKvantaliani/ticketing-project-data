@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-
     private final ModelMapper modelMapper;
 
     public UserMapper(ModelMapper modelMapper) {
@@ -24,5 +23,6 @@ public class UserMapper {
     public UserDTO convertToDto(User entity){
         return modelMapper.map(entity,UserDTO.class);
     }
+
 
 }
