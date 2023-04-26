@@ -14,6 +14,8 @@ public class RoleDtoConverter implements Converter<String, RoleDTO> {
     RoleService roleService;
 
     //We need converter because whatever we show on UI, Enum is shown as String and gives error. We need Converter for that.
+    //we need converter when we have dependency and has a relationship between objects. e.g user has dependency on role;
+    //We don't have TaskDTO converter because we don't have any object which required task.
     public RoleDtoConverter(@Lazy RoleService roleService) {
         this.roleService = roleService;
     }

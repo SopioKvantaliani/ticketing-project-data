@@ -23,4 +23,9 @@ public class TicketingProjectDataApplication {
         return new ModelMapper ();
     }
 
+    /*
+    Why we don't create configuration class?
+    having @SpringBootApplication already contains @configuration annotation;
+     */
+
 }

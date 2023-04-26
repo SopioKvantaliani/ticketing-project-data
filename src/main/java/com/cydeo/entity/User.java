@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table (name = "users")
 @NoArgsConstructor
-@Where(clause = "is_deleted=false") //any repository which is using user entity, whatever query inside, include "where" clause
+@Where(clause = "is_deleted=false") //soft delete, instead of hard. When we put on class level, it means whatever repository is using user entity, all those queries belongs to that repository automatically concatenate this annotation.
 public class User extends BaseEntity {
 
     private String firstName;
