@@ -25,9 +25,8 @@ public class TaskEntity extends BaseEntity {
     private LocalDate assignedDate;
 
     @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn (name = "employee_id")
+    @JoinColumn (name = "assigned_employee_id")
     private User assignedEmployee;
-
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name = "project_id")
     private Project project;
