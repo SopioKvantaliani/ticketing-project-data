@@ -13,6 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectDTO {
+
+    private Long id; //don't get the meaning of this line; ????????
+
     @NotBlank
     private String projectName;
 
