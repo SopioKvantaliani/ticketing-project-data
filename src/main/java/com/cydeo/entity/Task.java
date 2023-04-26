@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Table(name = "tasks")
 @NoArgsConstructor
 @Where(clause = "is_deleted=false")
-public class TaskEntity extends BaseEntity {
+public class Task extends BaseEntity {
 
     private String taskSubject; //for mapper naming is important
     private String taskDetail;

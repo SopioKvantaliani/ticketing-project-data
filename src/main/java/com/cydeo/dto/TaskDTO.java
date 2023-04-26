@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -28,7 +30,7 @@ public class TaskDTO {
 
     @NotBlank
     private String taskDetail;
-
+    @Enumerated (value = EnumType.STRING)
     private Status taskStatus;
     private LocalDate assignedDate;
 
