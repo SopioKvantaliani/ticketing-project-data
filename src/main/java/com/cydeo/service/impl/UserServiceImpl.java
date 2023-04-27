@@ -4,6 +4,7 @@ import com.cydeo.dto.ProjectDTO;
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
+import com.cydeo.mapper.MapperUtil;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
 import com.cydeo.service.ProjectService;
@@ -23,12 +24,14 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final MapperUtil mapperUtil;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
-        this.userRepository = userRepository;                               //We created circular dependency, because we used projectService inside userService and vica versa. So, we use @Lazy annotation.
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, ProjectService projectService, TaskService taskService, MapperUtil mapperUtil) {
+        this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.projectService = projectService;
         this.taskService = taskService;
+        this.mapperUtil = mapperUtil;
     }
 
     @Override
