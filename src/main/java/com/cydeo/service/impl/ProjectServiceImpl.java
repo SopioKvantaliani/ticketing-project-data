@@ -81,7 +81,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
+
+        project.setProjectCode(project.getProjectCode()+"-"+ project.getId()); //I want after deleting my project Code to be code+id;
         projectRepository.save(project);
+
+        taskService.deleteByProject (projectMapper.convertToDto(project));
     }
 
     @Override
@@ -90,6 +94,8 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+        taskService.completeByProject (projectMapper.convertToDto(project));
+
     }
 
     @Override
@@ -111,5 +117,12 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProjectDTO> listAllNonCompletedByAssignedManager(UserDTO assignedManager) {
+                                  //find all projects with no status and assigned manager from repository. As we pass dto parameter, we convert to entity to retrieve data from db
+        List <Project> projects = projectRepository.findAllByProjectStatusIsNotAndAssignedManager (Status.COMPLETE, userMapper.convertToEntity(assignedManager));
+        return projects.stream().map(projectMapper::convertToDto).collect(Collectors.toList());
     }
 }

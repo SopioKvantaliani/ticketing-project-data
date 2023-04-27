@@ -16,6 +16,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Where(clause = "is_deleted=false")
 public class Project extends BaseEntity {
+
+
     @Column (unique = true) //make unique annotation
     private String projectCode;
     private String projectName;

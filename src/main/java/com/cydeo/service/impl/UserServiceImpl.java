@@ -1,10 +1,15 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.ProjectDTO;
+import com.cydeo.dto.TaskDTO;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
 import com.cydeo.mapper.UserMapper;
 import com.cydeo.repository.UserRepository;
+import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +21,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final ProjectService projectService;
+    private final TaskService taskService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, @Lazy ProjectService projectService, @Lazy TaskService taskService) {
+        this.userRepository = userRepository;                               //We created circular dependency, because we used projectService inside userService and vica versa. So, we use @Lazy annotation.
         this.userMapper = userMapper;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
+
+
     @Override
     public List<UserDTO> listAllUsers() {
 
@@ -39,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void deleteByUserName(String username) {
+
          userRepository.deleteByUserName (username); //here we try to execute query and delete by username. We need to add delete method in UserRepository
     }
 
@@ -61,6 +73,12 @@ public class UserServiceImpl implements UserService {
     public void delete(String username) {
         //find user from DB first. Go to DB and get that user with userName;
         User user = userRepository.findByUserName(username);
+
+        if (checkIfUserCanBeDeleted(user)){
+            user.setIsDeleted(true);
+            userRepository.save(user);
+        }
+
         //change the isDeleted field to true
         user.setIsDeleted(true);
         //Save the object in the Db
@@ -74,4 +92,19 @@ public class UserServiceImpl implements UserService {
         //we will convert one by one and that's why we use map
         return users.stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }
+
+    private boolean checkIfUserCanBeDeleted (User user) { //since we are checking user can be deleted or not we can pass user entity; We can either Dto or entity
+        switch (user.getRole().getDescription()) { //user is coming from parameter
+            case "Manager": //1st case is manager
+                List <ProjectDTO> projectDTOSList = projectService.listAllNonCompletedByAssignedManager (userMapper.convertToDto(user));
+                return projectDTOSList.size()==0;
+            case "Employee": //2nd case is employee
+                List <TaskDTO> taskDTOSList = taskService.listAllNonCompletedByAssignedEmployee(userMapper.convertToDto(user));
+                return taskDTOSList.size()==0;
+            default:
+                return true; //it is deletable user if we are in the default;
+        }
+
+    }
+
 }
